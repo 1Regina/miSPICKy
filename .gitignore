@@ -1,0 +1,4 @@
+*.h5
+*.env
+*.whl
+_.ipynb_checkpoints

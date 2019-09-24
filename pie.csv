@@ -1,2 +1,13 @@
-Bad_Excuse,Clean_Room,Messy_Room
-659,938,633
+Type,Models,F1 Accuracy Score,Strength
+Deep,Neural Network (Base) ,0.42,Weak
+Machine,KNearestNeighbors,0.43,Weak
+Deep,CNN_SGD,0.59,Moderate
+Machine,LogisticRegression,0.60,Moderate
+Machine,SVC,0.62,Moderate
+Machine,DecisionTree,0.62,Moderate
+Machine,GaussianNB,0.64,Moderate
+Machine,Multilayer Perceptron,0.64,Moderate
+Machine,RandomForest,0.75,Strong
+Deep,CNN_SGD_earlystopping,0.76,Strong
+Machine,XGBoost,0.77,Strong
+Deep,CNN_Adam_earlystopping,0.84,Best

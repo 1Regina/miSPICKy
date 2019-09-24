@@ -1,38 +1,96 @@
 <!DOCTYPE html>
 <html>
-<head>
-	<meta charset="UTF-8">
-	<title>Clean and Dirty Room Classification</title>
 
-</head>
-<body>
+  <head>
+    <meta charset="UTF-8">
+    <title>Clean and Dirty Room Classification</title>
+    <script>
+      var myFileObject
+      var myImageDom
 
-	<h1><span>Clean and Dirty Room Classification</span></h1>
+      function init() {
+        const input = document.getElementById('photo');
+        // This will upload the file after having read it
+        const upload = (file) => {
+          myFileObject = file
 
-  <div style ="margin-top:15px;">
-    <p><h4><span style="color:black"> Upload your image below </span></h4></p>
-  </div>
-  <div id = a , style="margin-top:25px;">
-			<input type=file name = photo accept="image/*" onchange="loadFile(event)">
-			<center> <img id="output" align = middle STYLE="TOP:160px; LEFT:87px; WIDTH:325px; HEIGHT:325px"/> </center>
-      <script>
-        var loadFile = function(event) {
-        var output = document.getElementById('output');
-        output.src = URL.createObjectURL(event.target.files[0]);
-        };
-     </script>
-		</div>
+          // console.log('file', file)
 
-    <div id = b , style="margin-top:20px;">
-      <input type="Submit" name="">
-      
+          // clean up old things first
+          var el = document.getElementById("my_image")
+
+          if (myImageDom) el.removeChild(myImageDom);
+          document.querySelector('#my_result').innerText = 'N.A.'
+          document.querySelector('#my_result_val').innerText = 'N.A. out of 100'
+          document.querySelector('#meter_val').value = 0
+
+          if (FileReader && file) {
+              var fr = new FileReader();
+              fr.onload = function (e) {
+                myImageDom = document.createElement("img");
+                // the result image data
+                myImageDom.src = e.target.result;
+                myImageDom.height = 400;
+                el.appendChild(myImageDom);
+              }
+              fr.readAsDataURL(file)
+          }
+        }
+        // Event handler executed when a file is selected
+        const onSelectFile = () => upload(input.files[0])
+        input.addEventListener('change', onSelectFile, false)
+      }
+      function sendPhoto() {
+          if (!myFileObject) return alert('No file selected')
+          console.log('myFileObject', myFileObject)
+          const formData = new FormData();
+          formData.append('file', myFileObject);
+
+          fetch('http://127.0.0.1:5000/predict', { // Your POST endpoint
+            method: 'POST',
+            // headers: {
+            //   // Content-Type may need to be completely **omitted**
+            //   // or you may need something
+            //   "Content-Type": "multipart/form-data"
+            // },
+            body: formData
+            // body: myFileObject // This is your file object
+          }).then(
+            response => response.json() // if the response is a JSON object
+          ).then(
+            success => {
+              console.log(success)
+              document.querySelector('#my_result').innerText = success.result
+              document.querySelector('#my_result_val').innerText = Number(success.result_val).toFixed(2) + ' out of 100'
+              document.querySelector('#meter_val').value = Number(success.result_val).toFixed(2)
+              return
+            } // Handle the success response object
+          ).catch(
+            error => console.log(error) // Handle the error response object
+          )
+      }
+    </script>
+  </head>
+
+  <body onload="init()">
+    <h1><span>Clean and Dirty Room Classification</span></h1>
+    <div style ="margin-top:15px;">
+      <p><h4><span style="color:black"> Upload your image below and allow the model to predict the class!! </span></h4></p>
     </div>
+    <!-- <div style="margin-top:25px;">
+      <center> <img id="output" align = middle STYLE="TOP:160px; LEFT:87px; WIDTH:325px; HEIGHT:325px" src="{{ user_image }}"/> </center>
+    </div> -->
 
-    <form action="/predict">
-
-           
-    
-    </form>
-
-</body>
-</html> 
+    <div>
+      <input type="file" name="photo" id="photo" accept="image/*">
+      <button onclick="sendPhoto()" id='button' type="button" class="btn btn-primary btn-block btn-medium" style="font-size: 20px;">Predict</button>
+    </div>
+    <div style="padding-top: 4px;" id="my_image"></div>
+    <hr/>
+    <div class="predict-result">
+      <h2>Prediction Results</h2>
+      Predicted Class: <b id="my_result">N.A.</b><br/>
+      Prediction Probability: <b id="my_result_val">N.A.</b> <meter id="meter_val" value="0" min="0" max="100"></meter>
+    </div>
+  </body>
+</html>

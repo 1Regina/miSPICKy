@@ -1,6 +1,5 @@
 1.xgboost predict_proba (done)
 2.transfering bad prediction (out)
-3.front end
+3.front end (done)
 4.micro avg (adit)
-5.SPARK
-6. data in array is all the features that define each image? labelEncoder ...why is there no class 2 in xgboost
+5.SPARK (adit)

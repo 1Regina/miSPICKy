@@ -8,9 +8,12 @@ Process:
 1. Scrap and convert images from google for 1) Clean/Tidy room, 2) messy rooms and 3)excuses for written notes.
 2. Eyeball and remove images with "before"/"after" and cartoons and sort them into i)Bad_Excuse, ii) Clean_Room, iii) Messy_Room.
 2b. Dataset available at https://drive.google.com/open?id=1YVlio16nUdvqSxzYw36719Ns8oYb0fox
-3. Build a simple neural network
-4. Build a Convoluted NN with SGD optimizer and early stopping
-5. Build a Convoluted NN with 'adam' optimizer and early stopping
-6. Compare the F1, precision and recall metric across the 3 models
-7. Run trial with test images in images folder. Noted that "CNN_excuse", "CNNCleanRoom" and "CNNMessyRoom" gets progressively accurately-classified with each progressive model.
-8. Conclusion: CNN with 'adam' optimizer and early stopping is best. 
+3. Build machine learning model with 8 different algo. XGBoost yields the best F1 score.
+4. Build a simple neural network as base model for deep learning.
+5. Build a Convoluted NN with SGD optimizer and early stopping
+6. Build a Convoluted NN with 'adam' optimizer and early stopping
+7. Experiment with transfer learning using the vgg16.
+8. Compare the F1 across all models
+9. Run trial with test images in images folder. Noted that "CNN_excuse", "CNNCleanRoom" and "CNNMessyRoom" gets progressively accurately-classified with each progressive model but the ones with transfer learning were wrongly classified despite better scores of 0.9. This is due to overfitting.
+10. Conclusion: CNN with 'adam' optimizer with best weights restore and early stopping is best. 
+11. Blog available at https://bit.ly/2npUiNj
